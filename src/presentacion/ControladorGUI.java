@@ -7,6 +7,7 @@ package presentacion;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JButton;
 
 /**
  *
@@ -16,6 +17,7 @@ public class ControladorGUI implements ActionListener{
     
     private  Vista ventana;
     private  VistaInicial ventanaInicial;
+    private  VistaSemaforo semaforo;
 
     public ControladorGUI(Vista aThis) {
         ventana = aThis;
@@ -25,10 +27,25 @@ public class ControladorGUI implements ActionListener{
         ventanaInicial = aThis;
     }
     
+    public ControladorGUI(VistaSemaforo aThis, Vista vista) {
+        semaforo = aThis;
+        ventana = vista;
+    }
+    
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        getVentanaInicial().getModelo().conectar();
+        JButton jbuttonTmp = (JButton)e.getSource();
+        
+        if(jbuttonTmp.getText().equals("CONECTARSE")){
+            getVentanaInicial().getModelo().conectar();
+        }else if(jbuttonTmp.getName().contains("sfln")){
+            short linea = new Integer(jbuttonTmp.getName().split("-")[0].substring(4)).shortValue();
+            short semaforo = new Integer(jbuttonTmp.getName().split("-")[1]).shortValue();
+            short luz = new Integer(jbuttonTmp.getName().split("-")[2]).shortValue();
+            getVentana().getModelo().reportarFallaSemaforo(linea, semaforo, luz);
+        }
+        
     }
 
     public Vista getVentana() {
@@ -42,8 +59,4 @@ public class ControladorGUI implements ActionListener{
     public void setVentanaInicial(VistaInicial ventanaInicial) {
         this.ventanaInicial = ventanaInicial;
     }
-
-   
-    
-    
    }

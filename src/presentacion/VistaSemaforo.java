@@ -14,16 +14,38 @@ import javax.swing.JButton;
 public class VistaSemaforo extends javax.swing.JComponent {
     private int id;
     private int linea;
+    private ControladorGUI controlGUI;
+    private Vista vista;
+    
     /**
      * Creates new form VistaSemaforo
      */
-    public VistaSemaforo(int id, int linea) {
+    public VistaSemaforo(int id, int linea, Vista vista) {
         super();
         this.id = id;
         this.linea = linea;
+        this.vista = vista;
         initComponents();
+        capturarEventos();
     }
 
+    private void capturarEventos() {
+        Rojo.addActionListener(getControlGUI());
+        Amarillo.addActionListener(getControlGUI());
+        Verde.addActionListener(getControlGUI());
+    }
+    
+    public ControladorGUI getControlGUI() {
+         if(controlGUI == null){
+            controlGUI = new ControladorGUI(this, this.vista);
+        }
+        return controlGUI;
+    }
+
+    public void setControlGUI(ControladorGUI controlGUI) {
+        this.controlGUI = controlGUI;
+    }
+    
     public int getId() {
         return id;
     }
@@ -52,13 +74,14 @@ public class VistaSemaforo extends javax.swing.JComponent {
 
         Rojo = new javax.swing.JButton();
         Amarillo = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        Verde = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 0, 0));
         setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
 
         Rojo.setBackground(new java.awt.Color(0, 0, 0));
         Rojo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logica/img/luzRoja.png"))); // NOI18N
+        Rojo.setName("rojo"); // NOI18N
         Rojo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RojoActionPerformed(evt);
@@ -67,9 +90,11 @@ public class VistaSemaforo extends javax.swing.JComponent {
 
         Amarillo.setBackground(new java.awt.Color(0, 0, 0));
         Amarillo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logica/img/luzAmarilla.png"))); // NOI18N
+        Amarillo.setName("amarillo"); // NOI18N
 
-        jButton1.setBackground(new java.awt.Color(0, 0, 0));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logica/img/luzVerde.png"))); // NOI18N
+        Verde.setBackground(new java.awt.Color(0, 0, 0));
+        Verde.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logica/img/luzVerde.png"))); // NOI18N
+        Verde.setName("verde"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -77,7 +102,7 @@ public class VistaSemaforo extends javax.swing.JComponent {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(Rojo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(Amarillo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(Verde, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -86,7 +111,7 @@ public class VistaSemaforo extends javax.swing.JComponent {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Amarillo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(Verde, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -98,7 +123,7 @@ public class VistaSemaforo extends javax.swing.JComponent {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Amarillo;
     private javax.swing.JButton Rojo;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton Verde;
     // End of variables declaration//GEN-END:variables
 
     public JButton getAmarillo() {
@@ -117,11 +142,11 @@ public class VistaSemaforo extends javax.swing.JComponent {
         this.Rojo = Rojo;
     }
 
-    public JButton getjButton1() {
-        return jButton1;
+    public JButton getVerde() {
+        return Verde;
     }
 
-    public void setjButton1(JButton jButton1) {
-        this.jButton1 = jButton1;
+    public void setVerde(JButton jButton1) {
+        this.Verde = jButton1;
     }
 }

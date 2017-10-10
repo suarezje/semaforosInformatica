@@ -43,7 +43,6 @@ public class MiSistemaSemaforo implements Runnable {
 	}
 
 	public String inscribirse(String Ip, int puerto, String idcliente, short cantSemaforoL1, short cantSemaforoL2) {
-
 		this.idCliente = idcliente;
 		String rta = null;
 
@@ -209,7 +208,7 @@ public class MiSistemaSemaforo implements Runnable {
 	private void prenderLuces(int linea, String[] luces) {
 
 		if (linea == 1) {
-			for (int i = 1; i <= this.linea1.size(); i++) {
+			for (int i = 0; i < this.linea1.size(); i++) {
 				this.linea1.get(i).setRojo(Short.valueOf(luces[0]));
 				this.linea1.get(i).setAmarillo(Short.valueOf(luces[1]));
 				this.linea1.get(i).setVerde(Short.valueOf(luces[2]));
@@ -219,7 +218,7 @@ public class MiSistemaSemaforo implements Runnable {
 				}
 			}
 		} else if (linea == 2) {
-			for (int i = 1; i <= this.linea1.size(); i++) {
+			for (int i = 0; i < this.linea1.size(); i++) {
 				this.linea2.get(i).setRojo(Short.valueOf(luces[0]));
 				this.linea2.get(i).setAmarillo(Short.valueOf(luces[1]));
 				this.linea2.get(i).setVerde(Short.valueOf(luces[2]));

@@ -21,8 +21,7 @@ public class launcher {
        new launcher();
     }
 
-    public launcher() {
-        
+    public launcher() { 
         this.modelo = new Modelo();
         this.modelo.iniciarLineas();
     }

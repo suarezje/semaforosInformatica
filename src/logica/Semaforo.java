@@ -56,4 +56,7 @@ public class Semaforo {
         this.estaIntermitente = estaIntermitente;
     }
  
+    public String getEstadoLuces(){
+        return "rojo: "+rojo+", verde: "+verde+", amarillo: "+amarillo+", intermitente: "+estaIntermitente;
+    }
 }

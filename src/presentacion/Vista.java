@@ -34,6 +34,9 @@ public class Vista extends javax.swing.JFrame {
     }
 
     public ControladorGUI getControlGUI() {
+         if(controlGUI == null){
+            controlGUI = new ControladorGUI(this);
+        }
         return controlGUI;
     }
 

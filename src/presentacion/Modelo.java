@@ -7,19 +7,22 @@ package presentacion;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import static java.lang.Thread.sleep;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import logica.Semaforo;
-import logica.SocketCliente;
+import logica.MiSistemaSemaforo;
+import utils.Constantes;
 
 /**
  *
  * @author Estudiantes
  */
-public class Modelo {
-    private SocketCliente socketCliente;
+public class Modelo implements Runnable{
+    private MiSistemaSemaforo miSistemaSemaforo;
     private Vista ventanaPrincipal;
     private VistaInicial ventanaInicial;
     
@@ -29,7 +32,12 @@ public class Modelo {
     private String ipServidor;
     private int puerto;
 
+    private Thread hiloActualizacion;
+    private Thread hiloIntermitencia;
+    
     public Modelo() {
+        hiloActualizacion = new Thread(this);
+        hiloIntermitencia = new Thread(new HiloIntermitencia(getVentanaPrincipal()));
     }
     
     public Vista getVentanaPrincipal() {
@@ -43,12 +51,15 @@ public class Modelo {
         this.ventanaPrincipal = ventanaPricipal;
     }
     
-    public SocketCliente getSocketCliente() {
-        return socketCliente;
+    public MiSistemaSemaforo getMiSistemaSemaforo() {
+        if(miSistemaSemaforo == null){
+            miSistemaSemaforo = new MiSistemaSemaforo();
+        }
+        return miSistemaSemaforo;
     }
 
-    public void setSocketCliente(SocketCliente socketCliente) {
-        this.socketCliente = socketCliente;
+    public void setMiSistemaSemaforo(MiSistemaSemaforo miSistemaSemaforo) {
+        this.miSistemaSemaforo = miSistemaSemaforo;
     }
 
     public VistaInicial getVentanaInicial() {
@@ -66,22 +77,30 @@ public class Modelo {
 
     public void dibujarLineaSemaforo(){        
         getVentanaPrincipal().getLblTitulo().setText("ESTE ES EL PUNTO SEMAFÓRICO: "+this.idCliente);
-        GridLayout layout = new GridLayout(0,Integer.max(cantSemaforosL2,cantSemaforosL1),1,1);
+        GridLayout layout = new GridLayout(0,Integer.max(cantSemaforosL2,cantSemaforosL1),1,50);
         getVentanaPrincipal().getPanelContenido().setLayout(layout);
         getVentanaPrincipal().getPanelContenido().setPreferredSize(new Dimension(73,98));
         if(cantSemaforosL1>cantSemaforosL2){
             for(int i=0; i < cantSemaforosL1; i++){
                 Dimension d = new Dimension(73,98);
-                VistaSemaforo vistaSemaforo = new presentacion.VistaSemaforo(i,1);
+                VistaSemaforo vistaSemaforo = new presentacion.VistaSemaforo(i,1, getVentanaPrincipal());
                 vistaSemaforo.setName("sfln1-"+i);
+                vistaSemaforo.getRojo().setName("sfln1-"+i+"-"+Constantes.ROJO);
+                vistaSemaforo.getAmarillo().setName("sfln1-"+i+"-"+Constantes.AMARILLO);
+                vistaSemaforo.getVerde().setName("sfln1-"+i+"-"+Constantes.VERDE);
+
                 //vistaSemaforo.getAmarillo().setText("Semaforo L1: "+(cantSemaforosL1-i));
                 vistaSemaforo.setMaximumSize(d);
                 getVentanaPrincipal().getPanelContenido().add(vistaSemaforo);
             }
             for(int i=0; i < cantSemaforosL2; i++){
                 Dimension d = new Dimension(73,98);
-                VistaSemaforo vistaSemaforo = new presentacion.VistaSemaforo(i,2);
+                VistaSemaforo vistaSemaforo = new presentacion.VistaSemaforo(i,2,getVentanaPrincipal());
                 vistaSemaforo.setName("sfln2-"+i);
+                vistaSemaforo.getRojo().setName("sfln2-"+i+"-"+Constantes.ROJO);
+                vistaSemaforo.getAmarillo().setName("sfln2-"+i+"-"+Constantes.AMARILLO);
+                vistaSemaforo.getVerde().setName("sfln2-"+i+"-"+Constantes.VERDE);
+                
                 //vistaSemaforo.getAmarillo().setText("Semaforo L2: "+(cantSemaforosL2-i));
                 vistaSemaforo.setPreferredSize(d);
                 getVentanaPrincipal().getPanelContenido().add(vistaSemaforo);
@@ -89,16 +108,24 @@ public class Modelo {
         }else{
             for(int i=0; i < cantSemaforosL2; i++){
                 Dimension d = new Dimension(73,98);
-                VistaSemaforo vistaSemaforo = new presentacion.VistaSemaforo(i,2);
+                VistaSemaforo vistaSemaforo = new presentacion.VistaSemaforo(i,2,getVentanaPrincipal());
                 vistaSemaforo.setName("sfln2-"+i);
+                vistaSemaforo.getRojo().setName("sfln2-"+i+"-"+Constantes.ROJO);
+                vistaSemaforo.getAmarillo().setName("sfln2-"+i+"-"+Constantes.AMARILLO);
+                vistaSemaforo.getVerde().setName("sfln2-"+i+"-"+Constantes.VERDE);
+                
                 //vistaSemaforo.getAmarillo().setText("Semaforo L2: "+(cantSemaforosL2-i));
                 vistaSemaforo.setPreferredSize(d);
                 getVentanaPrincipal().getPanelContenido().add(vistaSemaforo);
             }
             for(int i=0; i < cantSemaforosL1; i++){
                 Dimension d = new Dimension(73,98);
-                VistaSemaforo vistaSemaforo = new presentacion.VistaSemaforo(i,1);
+                VistaSemaforo vistaSemaforo = new presentacion.VistaSemaforo(i,1,getVentanaPrincipal());
                 vistaSemaforo.setName("sfln1-"+i);
+                vistaSemaforo.getRojo().setName("sfln1-"+i+"-"+Constantes.ROJO);
+                vistaSemaforo.getAmarillo().setName("sfln1-"+i+"-"+Constantes.AMARILLO);
+                vistaSemaforo.getVerde().setName("sfln1-"+i+"-"+Constantes.VERDE);
+                
                 //vistaSemaforo.getAmarillo().setText("Semaforo L1: "+(cantSemaforosL1-i));
                 vistaSemaforo.setPreferredSize(d);
                 getVentanaPrincipal().getPanelContenido().add(vistaSemaforo);
@@ -106,13 +133,16 @@ public class Modelo {
         }
       
         getVentanaPrincipal().setVisible(true);
+        hiloActualizacion.start();
+        hiloIntermitencia.start();
+        
     }
     
     public void actualizarSemaforos(){
-        List<Semaforo> linea1 = getSocketCliente().getLinea1();
-        List<Semaforo> linea2 = getSocketCliente().getLinea2();
+        List<Semaforo> linea1 = getMiSistemaSemaforo().getLinea1();
+        List<Semaforo> linea2 = getMiSistemaSemaforo().getLinea2();
         
-        Class classname = SocketCliente.class;
+        Class classname = MiSistemaSemaforo.class;
         ClassLoader loader = classname.getClassLoader();
         
         String pn = classname.getPackage().getName();
@@ -120,38 +150,112 @@ public class Modelo {
         String urlPathAmarilla = pn + "/img/luzAmarilla.png";
         String urlPathVerde = pn + "/img/luzVerde.png";
         String urlPathNegra = pn + "/img/luzNegra.png";
+        String urlPathGris = pn + "/img/luzGris.png";
         
         java.net.URL imageURLRoja = loader.getResource(urlPathRoja);
         java.net.URL imageURLAmarilla = loader.getResource(urlPathAmarilla);
         java.net.URL imageURLVerde = loader.getResource(urlPathVerde);
         java.net.URL imageURLNegra = loader.getResource(urlPathNegra);
+        java.net.URL imageURLGris = loader.getResource(urlPathGris);
         
         ImageIcon imageRoja = new ImageIcon(imageURLRoja);
+        imageRoja.setDescription("ROJA");
         ImageIcon imageAmarilla = new ImageIcon(imageURLAmarilla);
+        imageAmarilla.setDescription("AMARILLA");
         ImageIcon imageVerde = new ImageIcon(imageURLVerde);
+        imageVerde.setDescription("VERDE");
         ImageIcon imageNegra = new ImageIcon(imageURLNegra);
+        imageNegra.setDescription("NEGRA");
+        ImageIcon imageGris = new ImageIcon(imageURLGris);
+        imageGris.setDescription("GRIS");
+        
         //Recorrer linea 1
         for(int i=0; i < linea1.size(); i++){
             Semaforo tmp = linea1.get(i);
             for(int j=0; j < getVentanaPrincipal().getPanelContenido().getComponentCount(); j++){
                 VistaSemaforo vistaSemaforo = (VistaSemaforo)getVentanaPrincipal().getPanelContenido().getComponent(j);
                 if(vistaSemaforo.getName().contains("sfln1")){
-                    if(tmp.getRojo() == 1){
-                        vistaSemaforo.getRojo().setIcon(imageRoja);
-                    }else{
-                        vistaSemaforo.getRojo().setIcon(imageNegra);
+                    System.out.println("Semaforo: "+vistaSemaforo.getName()+"-->"+tmp.getEstadoLuces());
+                    switch (tmp.getRojo()) {
+                        case Constantes.ENCENDIDO:
+                            vistaSemaforo.getRojo().setIcon(imageRoja);
+                            break;
+                        case Constantes.DANADO:
+                            vistaSemaforo.getRojo().setIcon(imageGris);
+                            break;
+                        default:
+                            vistaSemaforo.getRojo().setIcon(imageNegra);
+                            break;
                     }
                     
-                    if(tmp.getAmarillo() == 1){
-                        vistaSemaforo.getAmarillo().setIcon(imageAmarilla);
-                    }else{
-                        vistaSemaforo.getAmarillo().setIcon(imageNegra);
+                    switch (tmp.getAmarillo()) {
+                        case Constantes.ENCENDIDO:
+                            vistaSemaforo.getAmarillo().setIcon(imageAmarilla);
+                            break;
+                        case Constantes.DANADO:
+                            vistaSemaforo.getAmarillo().setIcon(imageGris);
+                            break;
+                        default:
+                            vistaSemaforo.getAmarillo().setIcon(imageNegra);
+                            break;
                     }
                     
-                    if(tmp.getVerde() == 1){
-                        vistaSemaforo.getjButton1().setIcon(imageVerde);
-                    }else{
-                        vistaSemaforo.getjButton1().setIcon(imageNegra);
+                    switch (tmp.getVerde()) {
+                        case Constantes.ENCENDIDO:
+                            vistaSemaforo.getVerde().setIcon(imageVerde);
+                            break;
+                        case Constantes.DANADO:
+                            vistaSemaforo.getVerde().setIcon(imageGris);
+                            break;
+                        default:
+                            vistaSemaforo.getVerde().setIcon(imageNegra);
+                            break;
+                    }
+                }
+            }
+        }
+        
+        //Recorrer linea 2
+        for(int i=0; i < linea2.size(); i++){
+            Semaforo tmp = linea2.get(i);
+            for(int j=0; j < getVentanaPrincipal().getPanelContenido().getComponentCount(); j++){
+                VistaSemaforo vistaSemaforo = (VistaSemaforo)getVentanaPrincipal().getPanelContenido().getComponent(j);
+                if(vistaSemaforo.getName().contains("sfln2")){
+                    System.out.println("Semaforo: "+vistaSemaforo.getName()+"-->"+tmp.getEstadoLuces());
+                    switch (tmp.getRojo()) {
+                        case Constantes.ENCENDIDO:
+                            vistaSemaforo.getRojo().setIcon(imageRoja);
+                            break;
+                        case Constantes.DANADO:
+                            vistaSemaforo.getRojo().setIcon(imageGris);
+                            break;
+                        default:
+                            vistaSemaforo.getRojo().setIcon(imageNegra);
+                            break;
+                    }
+                    
+                    switch (tmp.getAmarillo()) {
+                        case Constantes.ENCENDIDO:
+                            vistaSemaforo.getAmarillo().setIcon(imageAmarilla);
+                            break;
+                        case Constantes.DANADO:
+                            vistaSemaforo.getAmarillo().setIcon(imageGris);
+                            break;
+                        default:
+                            vistaSemaforo.getAmarillo().setIcon(imageNegra);
+                            break;
+                    }
+                    
+                    switch (tmp.getVerde()) {
+                        case Constantes.ENCENDIDO:
+                            vistaSemaforo.getVerde().setIcon(imageVerde);
+                            break;
+                        case Constantes.DANADO:
+                            vistaSemaforo.getVerde().setIcon(imageGris);
+                            break;
+                        default:
+                            vistaSemaforo.getVerde().setIcon(imageNegra);
+                            break;
                     }
                 }
             }
@@ -177,7 +281,7 @@ public class Modelo {
             }
             
             String respuestaConexion = "000";
-            //respuestaConexion = getSocketCliente().inicializarSemaforos(idCliente, cantSemaforosL1, cantSemaforosL2, ipServidor, puerto);
+            respuestaConexion = getMiSistemaSemaforo().inscribirse(ipServidor, puerto, idCliente, cantSemaforosL1, cantSemaforosL2);
             //Se conecto
             switch (respuestaConexion) {
                 case "000":
@@ -199,6 +303,34 @@ public class Modelo {
         }
     }
     
+    
+    public void reportarFallaSemaforo(short linea, short semaforo, short luz){
+        Class classname = MiSistemaSemaforo.class;
+        ClassLoader loader = classname.getClassLoader();
+        String pn = classname.getPackage().getName();
+        String urlPathGris = pn + "/img/luzGris.png";
+        java.net.URL imageURLGris = loader.getResource(urlPathGris);
+        ImageIcon imageGris = new ImageIcon(imageURLGris);
+        
+        String nombreBoton = "sfln"+linea+"-"+semaforo+"-"+luz;
+        for(int j=0; j < getVentanaPrincipal().getPanelContenido().getComponentCount(); j++){
+            VistaSemaforo vistaSemaforo = (VistaSemaforo)getVentanaPrincipal().getPanelContenido().getComponent(j);
+            if(vistaSemaforo.getRojo().getName().equals(nombreBoton)){
+                vistaSemaforo.getRojo().setIcon(imageGris);
+                return;
+            }
+            if(vistaSemaforo.getAmarillo().getName().equals(nombreBoton)){
+                vistaSemaforo.getAmarillo().setIcon(imageGris);
+                return;
+            }
+            if(vistaSemaforo.getVerde().getName().equals(nombreBoton)){
+                vistaSemaforo.getVerde().setIcon(imageGris);
+                return;
+            }
+        }
+        //miSistemaSemaforo.reportarFallaSemaforo(linea, semaforo, luz);
+    }
+    
     private void pintarMensajeError(String mensaje){
         JOptionPane.showMessageDialog(getVentanaInicial(), mensaje, "Semaforos", JOptionPane.ERROR_MESSAGE);
     }
@@ -206,4 +338,17 @@ public class Modelo {
     private void pintarMensajeAdvertencia(String mensaje){
         JOptionPane.showMessageDialog(getVentanaInicial(), mensaje, "Semaforos", JOptionPane.WARNING_MESSAGE);
     }
+
+    @Override
+    public void run() {
+        while(true){
+            try {
+                sleep(20000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Modelo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            actualizarSemaforos();
+        }
+    }
+    
 }
