@@ -214,28 +214,31 @@ public class MiSistemaSemaforo implements Runnable {
 	}
 
 	private void prenderLuces(int linea, String[] luces) {
+            if (linea == 1) {
+                for (int i = 0; i < this.linea1.size(); i++) {
+                    this.linea1.get(i).setRojo(Short.valueOf(luces[0]));
+                    this.linea1.get(i).setAmarillo(Short.valueOf(luces[1]));
+                    this.linea1.get(i).setVerde(Short.valueOf(luces[2]));
 
-		if (linea == 1) {
-			for (int i = 0; i < this.linea1.size(); i++) {
-				this.linea1.get(i).setRojo(Short.valueOf(luces[0]));
-				this.linea1.get(i).setAmarillo(Short.valueOf(luces[1]));
-				this.linea1.get(i).setVerde(Short.valueOf(luces[2]));
+                    if (luces[3].equals("1")) {
+                        this.linea1.get(i).setEstaIntermitente(Boolean.TRUE);
+                    }else{
+                        this.linea1.get(i).setEstaIntermitente(Boolean.FALSE);
+                    }
+                }
+            } else if (linea == 2) {
+                for (int i = 0; i < this.linea2.size(); i++) {
+                    this.linea2.get(i).setRojo(Short.valueOf(luces[0]));
+                    this.linea2.get(i).setAmarillo(Short.valueOf(luces[1]));
+                    this.linea2.get(i).setVerde(Short.valueOf(luces[2]));
 
-				if (luces[3].equals("1")) {
-					this.linea1.get(i).setEstaIntermitente(Boolean.TRUE);
-				}
-			}
-		} else if (linea == 2) {
-			for (int i = 0; i < this.linea1.size(); i++) {
-				this.linea2.get(i).setRojo(Short.valueOf(luces[0]));
-				this.linea2.get(i).setAmarillo(Short.valueOf(luces[1]));
-				this.linea2.get(i).setVerde(Short.valueOf(luces[2]));
-
-				if (luces[3].equals("1")) {
-					this.linea2.get(i).setEstaIntermitente(Boolean.TRUE);
-				}
-			}
-		}
+                    if (luces[3].equals("1")) {
+                            this.linea2.get(i).setEstaIntermitente(Boolean.TRUE);
+                    }else{
+                        this.linea2.get(i).setEstaIntermitente(Boolean.FALSE);
+                    }
+                }
+            }
 	}
 
 	public List<Semaforo> getLinea1() {

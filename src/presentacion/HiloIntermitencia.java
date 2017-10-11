@@ -64,48 +64,70 @@ public class HiloIntermitencia implements Runnable{
 
             //Recorrer linea 1
             for(int i=0; i < linea1.size(); i++){
-                for(int j=0; j < vista.getPanelContenido().getComponentCount(); j++){
-                    VistaSemaforo vistaSemaforo = (VistaSemaforo)vista.getPanelContenido().getComponent(j);
-                    if(((ImageIcon)vistaSemaforo.getRojo().getIcon()).getDescription().equals("ROJA")){
-                        vistaSemaforo.getRojo().setIcon(imageNegra);
-                    }else{
-                        vistaSemaforo.getRojo().setIcon(imageRoja);
-                    }
+                if(linea1.get(i).getEstaIntermitente()){
+                    System.out.println("Linea 1, Semaforo: "+i+"-->"+linea1.get(i).getEstadoLuces());
+                    for(int j=0; j < vista.getPanelContenido().getComponentCount(); j++){
+                        VistaSemaforo vistaSemaforo = (VistaSemaforo)vista.getPanelContenido().getComponent(j);
+                        if(vistaSemaforo.getName().contains("sfln1")){
+                            if(((ImageIcon)vistaSemaforo.getRojo().getIcon()).getDescription().equals("ROJA")){
+                                vistaSemaforo.getRojo().setIcon(imageNegra);
+                            }else if (((ImageIcon)vistaSemaforo.getRojo().getIcon()).getDescription().equals("NEGRA")){
+                                vistaSemaforo.getRojo().setIcon(imageNegra);
+                            }else{
+                                vistaSemaforo.getRojo().setIcon(imageRoja);
+                            }
 
-                    if(((ImageIcon)vistaSemaforo.getAmarillo().getIcon()).getDescription().equals("AMARILLA")){
-                        vistaSemaforo.getAmarillo().setIcon(imageNegra);
-                    }else{
-                        vistaSemaforo.getAmarillo().setIcon(imageAmarilla);
-                    }
+                            if(((ImageIcon)vistaSemaforo.getAmarillo().getIcon()).getDescription().equals("AMARILLA")){
+                                vistaSemaforo.getAmarillo().setIcon(imageNegra);
+                            }else if (((ImageIcon)vistaSemaforo.getAmarillo().getIcon()).getDescription().equals("NEGRA")){
+                                vistaSemaforo.getAmarillo().setIcon(imageNegra);
+                            }else{
+                                vistaSemaforo.getAmarillo().setIcon(imageAmarilla);
+                            }
 
-                    if(((ImageIcon)vistaSemaforo.getVerde().getIcon()).getDescription().equals("VERDE")){
-                        vistaSemaforo.getVerde().setIcon(imageNegra);
-                    }else{
-                        vistaSemaforo.getVerde().setIcon(imageVerde);
+                            if(((ImageIcon)vistaSemaforo.getVerde().getIcon()).getDescription().equals("VERDE")){
+                                vistaSemaforo.getVerde().setIcon(imageNegra);
+                            }else if (((ImageIcon)vistaSemaforo.getVerde().getIcon()).getDescription().equals("NEGRA")){
+                                vistaSemaforo.getVerde().setIcon(imageNegra);
+                            }else{
+                                vistaSemaforo.getVerde().setIcon(imageVerde);
+                            }
+                        }
                     }
                 }
             }
 
             //Recorrer linea 2
             for(int i=0; i < linea2.size(); i++){
-                for(int j=0; j < vista.getPanelContenido().getComponentCount(); j++){
-                    VistaSemaforo vistaSemaforo = (VistaSemaforo)vista.getPanelContenido().getComponent(j);
-                    if(((ImageIcon)vistaSemaforo.getRojo().getIcon()).getDescription().equals("ROJA")){
-                        vistaSemaforo.getRojo().setIcon(imageNegra);
-                    }else{
-                        vistaSemaforo.getRojo().setIcon(imageRoja);
-                    }
+                if(linea2.get(i).getEstaIntermitente()){
+                    System.out.println("Linea 2, Semaforo: "+i+"-->"+linea2.get(i).getEstadoLuces());
+                    for(int j=0; j < vista.getPanelContenido().getComponentCount(); j++){
+                        VistaSemaforo vistaSemaforo = (VistaSemaforo)vista.getPanelContenido().getComponent(j);
+                        if(vistaSemaforo.getName().contains("sfln2")){
+                            if(((ImageIcon)vistaSemaforo.getRojo().getIcon()).getDescription().equals("ROJA")){
+                                vistaSemaforo.getRojo().setIcon(imageNegra);
+                            }else if (((ImageIcon)vistaSemaforo.getRojo().getIcon()).getDescription().equals("NEGRA")){
+                                vistaSemaforo.getRojo().setIcon(imageNegra);
+                            }else{
+                                vistaSemaforo.getRojo().setIcon(imageRoja);
+                            }
 
-                    if(((ImageIcon)vistaSemaforo.getAmarillo().getIcon()).getDescription().equals("AMARILLA")){
-                        vistaSemaforo.getAmarillo().setIcon(imageNegra);
-                    }else{
-                        vistaSemaforo.getAmarillo().setIcon(imageAmarilla);
-                    }
+                            if(((ImageIcon)vistaSemaforo.getAmarillo().getIcon()).getDescription().equals("AMARILLA")){
+                                vistaSemaforo.getAmarillo().setIcon(imageNegra);
+                            }else if (((ImageIcon)vistaSemaforo.getAmarillo().getIcon()).getDescription().equals("NEGRA")){
+                                vistaSemaforo.getAmarillo().setIcon(imageNegra);
+                            }else{
+                                vistaSemaforo.getAmarillo().setIcon(imageAmarilla);
+                            }
 
-                    if(((ImageIcon)vistaSemaforo.getVerde().getIcon()).getDescription().equals("VERDE")){
-                        vistaSemaforo.getVerde().setIcon(imageNegra);
-                    }else{
-                        vistaSemaforo.getVerde().setIcon(imageVerde);
+                            if(((ImageIcon)vistaSemaforo.getVerde().getIcon()).getDescription().equals("VERDE")){
+                                vistaSemaforo.getVerde().setIcon(imageNegra);
+                            }else if (((ImageIcon)vistaSemaforo.getVerde().getIcon()).getDescription().equals("NEGRA")){
+                                vistaSemaforo.getVerde().setIcon(imageNegra);
+                            }else{
+                                vistaSemaforo.getVerde().setIcon(imageVerde);
+                            }
+                        }
                     }
                 }
             }

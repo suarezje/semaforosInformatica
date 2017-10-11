@@ -75,7 +75,8 @@ public class Modelo implements Runnable{
         this.ventanaInicial = ventanaInicial;
     }
 
-    public void dibujarLineaSemaforo(){        
+    public void dibujarLineaSemaforo(){
+    
         getVentanaPrincipal().getLblTitulo().setText("ESTE ES EL PUNTO SEMAFÓRICO: "+this.idCliente);
         GridLayout layout = new GridLayout(0,Integer.max(cantSemaforosL2,cantSemaforosL1),1,50);
         getVentanaPrincipal().getPanelContenido().setLayout(layout);
@@ -175,7 +176,7 @@ public class Modelo implements Runnable{
             for(int j=0; j < getVentanaPrincipal().getPanelContenido().getComponentCount(); j++){
                 VistaSemaforo vistaSemaforo = (VistaSemaforo)getVentanaPrincipal().getPanelContenido().getComponent(j);
                 if(vistaSemaforo.getName().contains("sfln1")){
-                    System.out.println("Semaforo: "+vistaSemaforo.getName()+"-->"+tmp.getEstadoLuces());
+                    //System.out.println("Semaforo: "+vistaSemaforo.getName()+"-->"+tmp.getEstadoLuces());
                     switch (tmp.getRojo()) {
                         case Constantes.ENCENDIDO:
                             vistaSemaforo.getRojo().setIcon(imageRoja);
@@ -343,7 +344,7 @@ public class Modelo implements Runnable{
     public void run() {
         while(true){
             try {
-                sleep(20000);
+                sleep(7000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Modelo.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -18,10 +18,10 @@ public class Semaforo {
     private Boolean estaIntermitente;
 
     public Semaforo() {
-        rojo = Constantes.ENCENDIDO;
-        amarillo = Constantes.ENCENDIDO;
-        verde = Constantes.ENCENDIDO;
-        estaIntermitente = Boolean.TRUE;
+        rojo = Constantes.APAGADO;
+        amarillo = Constantes.APAGADO;
+        verde = Constantes.APAGADO;
+        estaIntermitente = Boolean.FALSE;
     }
 
     public short getRojo() {
