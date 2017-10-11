@@ -57,20 +57,25 @@ public class MiSistemaSemaforo implements Runnable {
 
 			String comandoIncio = "C|" + idcliente + ":" + this.linea1.size() + "," + this.linea2.size();
 			this.outListener.writeUTF(comandoIncio);
+                        
+                        System.out.println("Enviando mensaje conexion: "+comandoIncio);
 
 			String respuestaLogin = this.inListener.readUTF();
+                        
+                        System.out.println("Respuesta Inscripcion: "+respuestaLogin);
 
-			String encabezado[] = respuestaLogin.split("[|]");
+			String encabezado[] = respuestaLogin.split("|");
 
 			if (encabezado[0].equals("R")) {
 				rta = "000";
-				crearSocketAlertas(105789);
+				crearSocketAlertas(10579);
 			} else if (encabezado[0].equals("X")) {
 				rta = "001";
 			}
 
 			this.hiloListener.start();
-			this.outListener.close();
+			//this.outListener.close();
+                        System.out.println("Respuesta Inscripcion 1: "+respuestaLogin);
 
 		} catch (Exception e) {
 			return "999";
@@ -100,11 +105,13 @@ public class MiSistemaSemaforo implements Runnable {
 			System.out.println("Inicia Alarmas");
 			this.serverSocketAlarmas = new ServerSocket(puerto);
 			this.socketAlarmas = this.serverSocketAlarmas.accept();
+                        
+                        System.out.println("Hizo el accept");
 
 			this.outAlarmas = new DataOutputStream(this.socketAlarmas.getOutputStream());
 
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 
 	}
@@ -170,7 +177,7 @@ public class MiSistemaSemaforo implements Runnable {
 		String reporteAlarmas = "B|" + this.idCliente + ":" + String.valueOf(l1roja) + "," + String.valueOf(l1amarillo)
 				+ "," + String.valueOf(l1verde) + "-" + String.valueOf(l2roja) + "," + String.valueOf(l2amarillo) + ","
 				+ String.valueOf(l2verde);
-
+                System.out.println("Mensaje de alarmas: "+reporteAlarmas);
 		try {
 			this.outAlarmas.writeUTF(reporteAlarmas);
 		} catch (IOException e) {
@@ -187,11 +194,12 @@ public class MiSistemaSemaforo implements Runnable {
 		while (true) {
 			try {
 				response = this.inListener.readUTF();
+                                System.out.println("Se recibio el mensaje: "+response);
 
-				String encabezado[] = response.split("[|]");
+				String encabezado[] = response.split("\\|");
 
 				if (encabezado[0].equals("E")) {
-					String lineas[] = encabezado[1].split("[-]");
+					String lineas[] = encabezado[1].split("-");
 					String lucesSemaforoL1[] = lineas[0].split(",");
 					prenderLuces(1, lucesSemaforoL1);
 					String lucesSemaforoL2[] = lineas[1].split(",");
